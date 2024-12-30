@@ -1,9 +1,6 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
 const typescriptEslintPlugin = require('@typescript-eslint/eslint-plugin');
 
-export default [
+module.exports = [
   {
     files: ["src/**/*.ts"],
     languageOptions: {
@@ -26,5 +23,6 @@ export default [
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
+    ignores: ["build/*"],
   },
 ];
