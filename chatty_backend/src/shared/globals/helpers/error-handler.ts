@@ -75,7 +75,7 @@ export class ServerError extends CustomError {
   }
 }
 
-export class ValidationError extends CustomError {
+export class JoiValidationError extends CustomError {
   statusCode = HTTPS_STATUS.BAD_REQUEST;
   status = "error";
 
