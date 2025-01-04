@@ -41,7 +41,7 @@ export class SignUp {
     }
 
     //Add to redis cache
-    const userDataForCache: IUserDocument = SignUp.prototype.userData(authData,userObjectId);
+    const userDataForCache: IUserDocument = SignUp.prototype.userData(authData, userObjectId);
     userDataForCache.profilePicture = `https://res.cloudinary.com/dhtweiqd3/image/upload/v${result.version}/${userObjectId}`;
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
     res.status(HTTP_STATUS.CREATED).json({ message: "User is created", authData });
@@ -61,7 +61,7 @@ export class SignUp {
   }
 
   private userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
-    const {_id, username, email, uId, password, avatarColor } = data;
+    const { _id, username, email, uId, password, avatarColor } = data;
     return {
       _id: userObjectId,
       authId: _id,
@@ -86,7 +86,7 @@ export class SignUp {
         messages: true,
         reactions: true,
         comments: true,
-        follows: true,
+        follows: true
       },
       social: {
         facebook: "",
