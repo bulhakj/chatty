@@ -3,7 +3,7 @@ import { UserModel } from "@auth/user/models/user.schema";
 
 class UserService {
   public async addUserData(data: IUserDocument): Promise<void> {
-    await UserModel.create();
+    await UserModel.create(data);
   }
 }
 

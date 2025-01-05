@@ -4,7 +4,7 @@ import { userWorker } from "@worker/user.worker";
 class UserQueue extends BaseQueue {
   constructor() {
     super("user");
-    this.processJobsInsideQueue("addUserToDB", 5, userWorker.addUserToDb);
+    this.processJobsInsideQueue("AddUserToDB", 5, userWorker.addUserToDb);
   }
 
   public addUserJob(name: string, data: any): void {
