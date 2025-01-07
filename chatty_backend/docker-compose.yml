@@ -6,6 +6,7 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+
   redis:
     image: redis:latest
     container_name: chattyredis
@@ -14,6 +15,19 @@ services:
     volumes:
       - redis_data:/data
 
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: chatty_redis_commander
+    depends_on:
+      - redis
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOST=redis
+    volumes:
+      - redis_commander_data:/data
+
 volumes:
   mongodb_data:
   redis_data:
+  redis_commander_data:
