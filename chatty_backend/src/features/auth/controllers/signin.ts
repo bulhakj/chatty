@@ -7,7 +7,8 @@ import HTTP_STATUS from "http-status-codes";
 import { BadRequestError } from "@global/helpers/error-handler";
 import { loginSchema } from "@auth/schemes/signin";
 import { IAuthDocument } from "@auth/interfaces/auth.interface";
-import { exist } from "joi";
+import { userService } from "@service/db/user.service";
+import { IUserDocument } from "@auth/user/interfaces/user.interface";
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -23,9 +24,11 @@ export class SignIn {
       throw new BadRequestError("Invalid Credentials");
     }
 
+    const user: IUserDocument = await userService.getUserByAuthId(`${existingUser.id}`);
+
     const userJWT: string = JWT.sign(
       {
-        userId: existingUser,
+        userId: user._id,
         uId: existingUser.uId,
         email: existingUser.email,
         username: existingUser.username,
@@ -33,7 +36,18 @@ export class SignIn {
       },
       config.JWT_TOKEN!
     );
-    req.session = {jwt: userJWT};
-    res.status(HTTP_STATUS.OK).json({message: "User logged in succesfully", user: existingUser, token: userJWT});
+
+    const userDocument: IUserDocument = {
+      ...user,
+      authId: existingUser!._id,
+      username: existingUser!.username,
+      email: existingUser!.email,
+      avatarColor: existingUser!.avatarColor,
+      uId: existingUser!.uId,
+      createdAt: existingUser!.createdAt
+    } as IUserDocument;
+
+    req.session = { jwt: userJWT };
+    res.status(HTTP_STATUS.OK).json({ message: "User logged in succesfully", user: userDocument, token: userJWT });
   }
 }
