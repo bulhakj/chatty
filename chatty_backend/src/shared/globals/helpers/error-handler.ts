@@ -48,7 +48,7 @@ export class NotFoundError extends CustomError {
   }
 }
 
-export class NotAuthorized extends CustomError {
+export class NotAuthorizedError extends CustomError {
   statusCode = HTTPS_STATUS.UNAUTHORIZED;
   status = "error";
 
@@ -75,7 +75,7 @@ export class ServerError extends CustomError {
   }
 }
 
-export class ValidationError extends CustomError {
+export class JoiValidationError extends CustomError {
   statusCode = HTTPS_STATUS.BAD_REQUEST;
   status = "error";
 
