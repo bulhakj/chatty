@@ -28,7 +28,7 @@ export class SignIn {
 
     const userJWT: string = JWT.sign(
       {
-        userId: user._id,
+        userId: existingUser._id,
         uId: existingUser.uId,
         email: existingUser.email,
         username: existingUser.username,
@@ -36,6 +36,8 @@ export class SignIn {
       },
       config.JWT_TOKEN!
     );
+
+    req.session = { jwt: userJWT };
 
     const userDocument: IUserDocument = {
       ...user,
@@ -47,7 +49,6 @@ export class SignIn {
       createdAt: existingUser!.createdAt
     } as IUserDocument;
 
-    req.session = { jwt: userJWT };
     res.status(HTTP_STATUS.OK).json({ message: "User logged in succesfully", user: userDocument, token: userJWT });
   }
 }

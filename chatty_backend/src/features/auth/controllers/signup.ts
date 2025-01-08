@@ -11,7 +11,6 @@ import { UploadApiResponse } from "cloudinary";
 import { uploads } from "@global/helpers/cloudinary-upload";
 import { IUserDocument } from "@auth/user/interfaces/user.interface";
 import { UserCache } from "@service/redis/user.cache";
-import { omit } from "lodash";
 import JWT from "jsonwebtoken";
 import { authQueue } from "@service/queues/auth.queue";
 import { userQueue } from "@service/queues/user.queue";
@@ -51,8 +50,7 @@ export class SignUp {
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
 
     // Add user to database
-    omit(userDataForCache, ["uId", "username", "email", "avatarColor", "password"]);
-    authQueue.addAuthUserJob("addAuthUserToDB", { value: userDataForCache });
+    authQueue.addAuthUserJob("addAuthUserToDB", { value: authData });
     userQueue.addUserJob("AddUserToDB", { value: userDataForCache });
 
     const userJWT: string = SignUp.prototype.signupToken(authData, userObjectId);
